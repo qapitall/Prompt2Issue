@@ -50,6 +50,10 @@ Then open <http://localhost:5173>.
 
 To use a different port: `PORT=8080 node server.js`.
 
+The server binds to `127.0.0.1` (your machine only). To reach it from another
+device on your network — and only if you understand the implications, since
+there is no authentication — start it with `HOST=0.0.0.0 node server.js`.
+
 ## Usage
 
 - **Add a card by hand:** click the `+` in the **To Do** column.
@@ -59,6 +63,9 @@ To use a different port: `PORT=8080 node server.js`.
     where you can edit, remove, then confirm the suggested cards.
   - Uncheck it to add the generated cards straight to the board.
 - **Move cards:** drag them between the **To Do / In Progress / Done** columns.
+- **Carry-over:** when you open a new day, unfinished cards from your most
+  recent day move forward automatically. A **↻ Nd** badge shows how many days a
+  card has been on the board. Finished cards stay in the day you completed them.
 - **History:** pick a date or use the **Past days…** dropdown to revisit a
   previous day's plan.
 

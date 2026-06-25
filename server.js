@@ -22,6 +22,9 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, "public");
 const PORT = process.env.PORT || 5173;
+// Bind to loopback by default so the board (and the Claude CLI it can trigger)
+// is never exposed to the local network. Set HOST=0.0.0.0 to opt into LAN access.
+const HOST = process.env.HOST || "127.0.0.1";
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -68,7 +71,7 @@ function serveStatic(req, res, pathname) {
   const filePath = path.join(PUBLIC_DIR, rel);
 
   // Prevent path traversal outside the public directory.
-  if (!filePath.startsWith(PUBLIC_DIR)) {
+  if (filePath !== PUBLIC_DIR && !filePath.startsWith(PUBLIC_DIR + path.sep)) {
     res.writeHead(403);
     res.end("Forbidden");
     return;
@@ -171,6 +174,6 @@ const server = http.createServer(async (req, res) => {
   serveStatic(req, res, url.pathname);
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`Prompt2Issue running at http://localhost:${PORT}`);
 });
