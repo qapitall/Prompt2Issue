@@ -22,6 +22,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/qapitall/Prompt2Issue.git"
+  },
+  "homepage": "https://github.com/qapitall/Prompt2Issue#readme",
+  "bugs": {
+    "url": "https://github.com/qapitall/Prompt2Issue/issues"
   }
 }
