@@ -302,10 +302,30 @@ async function loadHistory() {
   }
 }
 
+// --- Theme (light / dark) ----------------------------------------------------
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const btn = $("#theme-toggle");
+  btn.textContent = theme === "dark" ? "☀️" : "🌙";
+  btn.title = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+}
+
+function initTheme() {
+  // The inline script in <head> already set the theme; mirror it on the button.
+  applyTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+  $("#theme-toggle").addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem("theme", next);
+    applyTheme(next);
+  });
+}
+
 // --- Wiring ------------------------------------------------------------------
 
 function init() {
   $("#date-picker").value = currentDate;
+  initTheme();
 
   $("#date-picker").addEventListener("change", async (e) => {
     currentDate = e.target.value || todayStr();

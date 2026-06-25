@@ -1,15 +1,33 @@
 :root {
   --bg: #f4f5f7;
   --surface: #ffffff;
+  --column: #ebecf0;
   --border: #e2e4e9;
   --text: #1f2430;
   --muted: #6b7280;
   --accent: #4f46e5;
   --accent-hover: #4338ca;
+  --accent-soft: #eef2ff;
   --high: #ef4444;
   --medium: #f59e0b;
   --low: #9ca3af;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1115;
+  --surface: #1a1d24;
+  --column: #15181e;
+  --border: #2b3039;
+  --text: #e6e8ee;
+  --muted: #9aa3b2;
+  --accent: #818cf8;
+  --accent-hover: #a5b0fb;
+  --accent-soft: #232742;
+  --high: #f87171;
+  --medium: #fbbf24;
+  --low: #707888;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -58,6 +76,34 @@ body {
   border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1;
+  padding: 7px 10px;
+  border-radius: 6px;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+}
+
+/* Keep text inputs in sync with the theme (so they are not white in dark mode) */
+.ai-box textarea,
+.modal input,
+.modal textarea,
+.modal select,
+.preview-item input,
+.preview-item textarea,
+.preview-item select {
+  background: var(--surface);
+  color: var(--text);
 }
 
 /* AI box */
@@ -145,7 +191,7 @@ button.ghost {
 }
 
 .column {
-  background: #ebecf0;
+  background: var(--column);
   border-radius: 10px;
   padding: 12px;
   min-height: 120px;
@@ -269,7 +315,7 @@ button.ghost {
   margin-left: 6px;
   padding: 2px 7px;
   border-radius: 999px;
-  background: #eef2ff;
+  background: var(--accent-soft);
   color: var(--accent);
   white-space: nowrap;
 }

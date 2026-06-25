@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prompt2Issue</title>
     <link rel="stylesheet" href="/style.css" />
+    <!-- Apply the saved theme before paint to avoid a white flash on load -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
+      })();
+    </script>
   </head>
   <body>
     <header class="app-header">
@@ -18,6 +26,7 @@
         <select id="history-select" title="Saved days">
           <option value="">Past days…</option>
         </select>
+        <button id="theme-toggle" class="theme-toggle" type="button" title="Toggle dark mode">🌙</button>
       </div>
     </header>
 
