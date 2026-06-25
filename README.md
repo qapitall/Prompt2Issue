@@ -10,6 +10,14 @@ cards by hand. Each day's plan is saved so you can look back.
 > The UI is in English. Write your plan in any language — cards are created in
 > that same language (write in Turkish, get Turkish cards).
 
+## Screenshots
+
+Light and dark themes — switch any time with the toggle in the top-right corner.
+
+| Dark | Light |
+| --- | --- |
+| ![Dark theme](docs/screenshot-dark.png) | ![Light theme](docs/screenshot-light.png) |
+
 ## How it works
 
 The AI feature runs through the **Claude Code CLI** in headless mode
