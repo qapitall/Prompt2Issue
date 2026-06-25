@@ -282,6 +282,12 @@ button.ghost {
 }
 
 /* Modals */
+/* The `hidden` attribute must win over the display rule below; a class+attr
+   selector outranks the bare class, so hiding actually works. */
+.modal-overlay[hidden] {
+  display: none;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
