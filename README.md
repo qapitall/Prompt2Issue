@@ -7,7 +7,8 @@ Write something like _"today I want to finish the API docs and fix the login
 bug"_, and Prompt2Issue creates kanban cards for it. You can also add and edit
 cards by hand. Each day's plan is saved so you can look back.
 
-> The UI is in Turkish, but it works with plans written in any language.
+> The UI is in English. Write your plan in any language — cards are created in
+> that same language (write in Turkish, get Turkish cards).
 
 ## How it works
 
@@ -51,17 +52,15 @@ To use a different port: `PORT=8080 node server.js`.
 
 ## Usage
 
-- **Add a card by hand:** click the `+` in any column.
+- **Add a card by hand:** click the `+` in the **To Do** column.
 - **Generate cards with AI:** type your plan in the top box and click
-  **"Kartları üret"** (Generate cards).
-  - With **"Eklemeden önce önizle"** (preview before adding) checked — the
-    default — you get a preview where you can edit, remove, then confirm the
-    suggested cards.
+  **Generate cards**.
+  - With **Preview before adding** checked — the default — you get a preview
+    where you can edit, remove, then confirm the suggested cards.
   - Uncheck it to add the generated cards straight to the board.
-- **Move cards:** drag them between the **Yapılacak / Yapılıyor / Bitti**
-  (To do / In progress / Done) columns.
-- **History:** pick a date or use the "Geçmiş günler…" (past days) dropdown to
-  revisit a previous day's plan.
+- **Move cards:** drag them between the **To Do / In Progress / Done** columns.
+- **History:** pick a date or use the **Past days…** dropdown to revisit a
+  previous day's plan.
 
 ## Data & privacy
 

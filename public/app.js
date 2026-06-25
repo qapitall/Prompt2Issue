@@ -1,8 +1,8 @@
 // Frontend logic for Prompt2Issue. Vanilla JS, no build step.
 // UI strings are Turkish (user preference); code and comments are English.
 
-const STATUS_LABELS = { todo: "Yapılacak", doing: "Yapılıyor", done: "Bitti" };
-const PRIORITY_LABELS = { high: "Yüksek", medium: "Orta", low: "Düşük" };
+const STATUS_LABELS = { todo: "To Do", doing: "In Progress", done: "Done" };
+const PRIORITY_LABELS = { high: "High", medium: "Medium", low: "Low" };
 
 // Current board date in YYYY-MM-DD (local). Defaults to today.
 let currentDate = todayStr();
@@ -80,7 +80,7 @@ function renderCard(card) {
     const tag = document.createElement("span");
     tag.className = "source-tag";
     tag.textContent = " 🤖";
-    tag.title = "AI tarafından oluşturuldu";
+    tag.title = "Created by AI";
     left.appendChild(tag);
   }
   footer.appendChild(left);
@@ -89,11 +89,11 @@ function renderCard(card) {
   actions.className = "card-actions";
   const editBtn = document.createElement("button");
   editBtn.textContent = "✏️";
-  editBtn.title = "Düzenle";
+  editBtn.title = "Edit";
   editBtn.addEventListener("click", () => openCardEditor(card));
   const delBtn = document.createElement("button");
   delBtn.textContent = "🗑️";
-  delBtn.title = "Sil";
+  delBtn.title = "Delete";
   delBtn.addEventListener("click", () => removeCard(card.id));
   actions.append(editBtn, delBtn);
   footer.appendChild(actions);
@@ -136,7 +136,7 @@ let editingCardId = null;
 
 function openCardEditor(card) {
   editingCardId = card ? card.id : null;
-  $("#card-modal-title").textContent = card ? "Kartı düzenle" : "Yeni kart";
+  $("#card-modal-title").textContent = card ? "Edit card" : "New card";
   $("#card-title").value = card ? card.title : "";
   $("#card-description").value = card ? card.description : "";
   $("#card-priority").value = card ? card.priority : "medium";
@@ -167,7 +167,7 @@ async function saveCardFromEditor() {
 }
 
 async function removeCard(id) {
-  if (!confirm("Bu kart silinsin mi?")) return;
+  if (!confirm("Delete this card?")) return;
   await api("DELETE", `/api/cards/${id}?date=${currentDate}`);
   await loadBoard();
 }
@@ -190,11 +190,11 @@ async function generate() {
   if (!text) return;
   const btn = $("#generate-btn");
   btn.disabled = true;
-  setStatus("AI kartları üretiyor… (birkaç saniye)", "loading");
+  setStatus("AI is generating cards… (a few seconds)", "loading");
   try {
     const { cards } = await api("POST", "/api/generate", { text });
     if (!cards.length) {
-      setStatus("AI kart üretemedi. Planını biraz daha açık yazmayı dene.", "error");
+      setStatus("AI couldn't generate any cards. Try describing your plan more clearly.", "error");
       return;
     }
     if ($("#preview-toggle").checked) {
@@ -203,7 +203,7 @@ async function generate() {
     } else {
       await api("POST", "/api/cards/bulk", { date: currentDate, cards });
       $("#plan-input").value = "";
-      setStatus(`${cards.length} kart eklendi.`, "");
+      setStatus(`${cards.length} card(s) added.`, "");
       await loadBoard();
     }
   } catch (err) {
@@ -276,7 +276,7 @@ async function confirmPreview() {
   if (!cards.length) return;
   await api("POST", "/api/cards/bulk", { date: currentDate, cards });
   $("#plan-input").value = "";
-  setStatus(`${cards.length} kart eklendi.`, "");
+  setStatus(`${cards.length} card(s) added.`, "");
   await loadBoard();
 }
 
@@ -285,7 +285,7 @@ async function confirmPreview() {
 async function loadHistory() {
   const { dates } = await api("GET", "/api/dates");
   const select = $("#history-select");
-  select.innerHTML = '<option value="">Geçmiş günler…</option>';
+  select.innerHTML = '<option value="">Past days…</option>';
   for (const date of dates) {
     const opt = document.createElement("option");
     opt.value = date;
