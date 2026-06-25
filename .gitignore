@@ -1,0 +1,11 @@
+# Personal kanban data — never commit
+data/
+
+# Dependencies (none expected, kept as a safeguard)
+node_modules/
+
+# OS / editor noise
+.DS_Store
+*.log
+.idea/
+.vscode/

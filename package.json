@@ -1,0 +1,26 @@
+{
+  "name": "prompt2issue",
+  "version": "1.0.0",
+  "description": "A simple local kanban board for daily tasks, with AI that turns plain-language plans into cards using your Claude Code subscription (no API cost).",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "kanban",
+    "todo",
+    "claude",
+    "claude-code",
+    "ai",
+    "productivity"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

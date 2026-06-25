@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt2Issue</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <h1>Prompt2Issue</h1>
+        <span class="tagline">Günlük planını karta çevir</span>
+      </div>
+      <div class="date-controls">
+        <label for="date-picker">Tarih</label>
+        <input type="date" id="date-picker" />
+        <select id="history-select" title="Kayıtlı günler">
+          <option value="">Geçmiş günler…</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- AI plan input -->
+    <section class="ai-box">
+      <textarea
+        id="plan-input"
+        rows="3"
+        placeholder="Bugün ne yapmak istiyorsun? Örn: API dökümanını yaz, login bugını düzelt, ekip toplantısına hazırlan…"
+      ></textarea>
+      <div class="ai-actions">
+        <label class="preview-toggle">
+          <input type="checkbox" id="preview-toggle" checked />
+          Eklemeden önce önizle
+        </label>
+        <button id="generate-btn" class="primary">Kartları üret</button>
+      </div>
+      <p id="ai-status" class="status" hidden></p>
+    </section>
+
+    <!-- Kanban board -->
+    <main class="board" id="board">
+      <section class="column" data-status="todo">
+        <header class="column-header">
+          <h2>Yapılacak</h2>
+          <button class="add-card-btn" data-status="todo" title="Kart ekle">+</button>
+        </header>
+        <div class="cards" data-status="todo"></div>
+      </section>
+
+      <section class="column" data-status="doing">
+        <header class="column-header">
+          <h2>Yapılıyor</h2>
+          <button class="add-card-btn" data-status="doing" title="Kart ekle">+</button>
+        </header>
+        <div class="cards" data-status="doing"></div>
+      </section>
+
+      <section class="column" data-status="done">
+        <header class="column-header">
+          <h2>Bitti</h2>
+          <button class="add-card-btn" data-status="done" title="Kart ekle">+</button>
+        </header>
+        <div class="cards" data-status="done"></div>
+      </section>
+    </main>
+
+    <!-- Preview modal for AI-suggested cards -->
+    <div class="modal-overlay" id="preview-modal" hidden>
+      <div class="modal">
+        <h2>AI önerileri</h2>
+        <p class="modal-hint">Kartları düzenleyebilir, silebilir, sonra ekleyebilirsin.</p>
+        <div id="preview-list" class="preview-list"></div>
+        <div class="modal-actions">
+          <button id="preview-cancel" class="ghost">Vazgeç</button>
+          <button id="preview-confirm" class="primary">Onayla ve ekle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor modal for a single card (manual add / edit) -->
+    <div class="modal-overlay" id="card-modal" hidden>
+      <div class="modal">
+        <h2 id="card-modal-title">Yeni kart</h2>
+        <label>Başlık<input type="text" id="card-title" /></label>
+        <label>Açıklama<textarea id="card-description" rows="3"></textarea></label>
+        <label>
+          Öncelik
+          <select id="card-priority">
+            <option value="high">Yüksek</option>
+            <option value="medium" selected>Orta</option>
+            <option value="low">Düşük</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button id="card-cancel" class="ghost">Vazgeç</button>
+          <button id="card-save" class="primary">Kaydet</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
