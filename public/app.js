@@ -76,6 +76,14 @@ function renderCard(card) {
   badge.className = `badge ${card.priority}`;
   badge.textContent = PRIORITY_LABELS[card.priority];
   left.appendChild(badge);
+  if (card.carryCount > 0) {
+    // Show how many days this card has been on the board (first day + carries).
+    const carry = document.createElement("span");
+    carry.className = "carry-badge";
+    carry.textContent = `↻ ${card.carryCount + 1}d`;
+    carry.title = `Carried over for ${card.carryCount + 1} days`;
+    left.appendChild(carry);
+  }
   if (card.source === "ai") {
     const tag = document.createElement("span");
     tag.className = "source-tag";

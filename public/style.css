@@ -264,6 +264,16 @@ button.ghost {
   color: var(--muted);
 }
 
+.carry-badge {
+  font-size: 11px;
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
 .card-actions {
   display: flex;
   gap: 6px;

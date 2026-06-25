@@ -14,7 +14,7 @@ import {
   deleteCard,
   isValidDate,
   listDates,
-  readBoard,
+  openDay,
   todayStr,
   updateCard,
 } from "./lib/store.js";
@@ -90,9 +90,10 @@ async function handleApi(req, res, url) {
   const method = req.method;
 
   // GET /api/board?date=YYYY-MM-DD
+  // openDay carries unfinished work forward when today is first opened.
   if (method === "GET" && pathname === "/api/board") {
     const date = resolveDate(url.searchParams.get("date"));
-    return sendJson(res, 200, readBoard(date));
+    return sendJson(res, 200, openDay(date));
   }
 
   // GET /api/dates
