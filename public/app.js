@@ -7,6 +7,10 @@ const PRIORITY_LABELS = { high: "High", medium: "Medium", low: "Low" };
 // Current board date in YYYY-MM-DD (local). Defaults to today.
 let currentDate = todayStr();
 
+// Last loaded cards and the active category filter ("" = show all).
+let boardCards = [];
+let categoryFilter = "";
+
 // --- Small DOM / API helpers -------------------------------------------------
 
 const $ = (sel) => document.querySelector(sel);
@@ -31,14 +35,33 @@ async function api(method, url, body) {
 
 async function loadBoard() {
   const data = await api("GET", `/api/board?date=${currentDate}`);
-  renderBoard(data.cards || []);
+  boardCards = data.cards || [];
+  updateCategoryFilter();
+  renderBoard(boardCards);
+}
+
+// Rebuild the filter dropdown from the categories present on this board.
+function updateCategoryFilter() {
+  const categories = [...new Set(boardCards.map((c) => c.category).filter(Boolean))].sort();
+  if (!categories.includes(categoryFilter)) categoryFilter = "";
+  const select = $("#category-filter");
+  select.innerHTML = '<option value="">All</option>';
+  for (const cat of categories) {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.textContent = cat;
+    if (cat === categoryFilter) opt.selected = true;
+    select.appendChild(opt);
+  }
 }
 
 function renderBoard(cards) {
   for (const status of Object.keys(STATUS_LABELS)) {
     const container = document.querySelector(`.cards[data-status="${status}"]`);
     container.innerHTML = "";
-    const inColumn = cards.filter((c) => c.status === status);
+    const inColumn = cards.filter(
+      (c) => c.status === status && (!categoryFilter || c.category === categoryFilter)
+    );
     if (inColumn.length === 0) {
       const hint = document.createElement("div");
       hint.className = "empty-hint";
@@ -76,6 +99,12 @@ function renderCard(card) {
   badge.className = `badge ${card.priority}`;
   badge.textContent = PRIORITY_LABELS[card.priority];
   left.appendChild(badge);
+  if (card.category) {
+    const cat = document.createElement("span");
+    cat.className = "category-badge";
+    cat.textContent = card.category;
+    left.appendChild(cat);
+  }
   if (card.carryCount > 0) {
     // Show how many days this card has been on the board (first day + carries).
     const carry = document.createElement("span");
@@ -160,8 +189,12 @@ function wireDragAndDrop() {
       if (!id) return;
       window.__dropped = true;
       const dragging = zone.querySelector(".card.dragging");
-      // Where the card sits in this column now is its new position.
-      const position = dragging ? [...zone.querySelectorAll(".card")].indexOf(dragging) : 0;
+      // Map the drop spot to a position in the FULL column (a category filter
+      // may be hiding cards): insert before the next visible card, or at the end.
+      const visible = dragging ? [...zone.querySelectorAll(".card")] : [];
+      const next = visible[visible.indexOf(dragging) + 1];
+      const column = boardCards.filter((c) => c.status === zone.dataset.status && c.id !== id);
+      const position = next ? column.findIndex((c) => c.id === next.dataset.id) : column.length;
       await api("PUT", `/api/cards/${id}`, {
         date: currentDate,
         status: zone.dataset.status,
@@ -181,6 +214,7 @@ function openCardEditor(card) {
   $("#card-modal-title").textContent = card ? "Edit card" : "New card";
   $("#card-title").value = card ? card.title : "";
   $("#card-description").value = card ? card.description : "";
+  $("#card-category").value = card ? card.category || "" : "";
   $("#card-priority").value = card ? card.priority : "medium";
   $("#card-modal").dataset.status = card ? card.status : $("#card-modal").dataset.status || "todo";
   $("#card-modal").hidden = false;
@@ -192,6 +226,7 @@ async function saveCardFromEditor() {
     date: currentDate,
     title: $("#card-title").value.trim(),
     description: $("#card-description").value.trim(),
+    category: $("#card-category").value.trim(),
     priority: $("#card-priority").value,
   };
   if (!payload.title) {
@@ -281,6 +316,12 @@ function renderPreviewItem(card) {
   const footer = document.createElement("div");
   footer.className = "preview-item-footer";
 
+  const categoryInput = document.createElement("input");
+  categoryInput.type = "text";
+  categoryInput.value = card.category || "";
+  categoryInput.placeholder = "Category";
+  categoryInput.dataset.field = "category";
+
   const prioritySelect = document.createElement("select");
   prioritySelect.dataset.field = "priority";
   for (const [value, label] of Object.entries(PRIORITY_LABELS)) {
@@ -296,7 +337,7 @@ function renderPreviewItem(card) {
   removeBtn.textContent = "Kaldır";
   removeBtn.addEventListener("click", () => item.remove());
 
-  footer.append(prioritySelect, removeBtn);
+  footer.append(categoryInput, prioritySelect, removeBtn);
   item.append(titleInput, descInput, footer);
   return item;
 }
@@ -307,6 +348,7 @@ function collectPreviewCards() {
     .map((item) => ({
       title: item.querySelector('[data-field="title"]').value.trim(),
       description: item.querySelector('[data-field="description"]').value.trim(),
+      category: item.querySelector('[data-field="category"]').value.trim(),
       priority: item.querySelector('[data-field="priority"]').value,
     }))
     .filter((c) => c.title);
@@ -371,6 +413,11 @@ function init() {
     currentDate = e.target.value;
     $("#date-picker").value = currentDate;
     await loadBoard();
+  });
+
+  $("#category-filter").addEventListener("change", (e) => {
+    categoryFilter = e.target.value;
+    renderBoard(boardCards);
   });
 
   $("#generate-btn").addEventListener("click", generate);

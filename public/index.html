@@ -47,6 +47,14 @@
       <p id="ai-status" class="status" hidden></p>
     </section>
 
+    <!-- Category filter -->
+    <div class="filter-bar">
+      <label for="category-filter">Category</label>
+      <select id="category-filter">
+        <option value="">All</option>
+      </select>
+    </div>
+
     <!-- Kanban board -->
     <main class="board" id="board">
       <section class="column" data-status="todo">
@@ -91,6 +99,7 @@
         <h2 id="card-modal-title">New card</h2>
         <label>Title<input type="text" id="card-title" /></label>
         <label>Description<textarea id="card-description" rows="3"></textarea></label>
+        <label>Category<input type="text" id="card-category" placeholder="e.g. work, bug, personal" /></label>
         <label>
           Priority
           <select id="card-priority">
