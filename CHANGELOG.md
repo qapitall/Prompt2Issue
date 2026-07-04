@@ -1,0 +1,38 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.2.0] - 2026-07-04
+
+### Added
+- Drag-and-drop reordering: cards can be reordered within a column and dropped
+  at an exact position in another column. The order is saved and survives reloads.
+- Card categories: type a free-text category when adding or editing a card,
+  filter the board by category, and AI-generated cards get a category assigned
+  automatically (editable in the preview).
+
+### Fixed
+- AI generation could return prose instead of JSON (and act on local files).
+  The Claude CLI is now invoked as a pure text transformer: proper system
+  prompt, all tools disabled, and a neutral working directory.
+
+## [1.1.0] - 2026-06-25
+
+### Added
+- Dark mode toggle with saved preference.
+- Screenshots and repository links in the README / package metadata.
+
+## [1.0.0] - 2026-06-25
+
+### Added
+- Initial release: local kanban board (To Do / In Progress / Done) with one
+  JSON file per day, automatic carry-over of unfinished cards, manual card
+  editing, and AI card generation from plain-language plans via the Claude
+  Code CLI.
+
+[1.2.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/qapitall/Prompt2Issue/releases/tag/v1.0.0
