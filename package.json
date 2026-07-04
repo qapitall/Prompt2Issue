@@ -1,6 +1,6 @@
 {
   "name": "prompt2issue",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A simple local kanban board for daily tasks, with AI that turns plain-language plans into cards using your Claude Code subscription (no API cost).",
   "type": "module",
   "main": "server.js",
