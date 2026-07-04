@@ -111,28 +111,62 @@ function renderCard(card) {
   el.addEventListener("dragstart", () => {
     el.classList.add("dragging");
     window.__draggingId = card.id;
+    window.__dropped = false;
   });
-  el.addEventListener("dragend", () => el.classList.remove("dragging"));
+  el.addEventListener("dragend", () => {
+    el.classList.remove("dragging");
+    window.__draggingId = null;
+    // Drag was cancelled (no drop): restore the board to its saved order,
+    // since dragover may have moved the card around in the DOM.
+    if (!window.__dropped) loadBoard();
+  });
 
   return el;
 }
 
-// --- Drag & drop between columns --------------------------------------------
+// --- Drag & drop: reorder within a column and move across columns ------------
+
+// The card (below the pointer) that the dragged card should be inserted before.
+function getDragAfterElement(zone, y) {
+  const others = [...zone.querySelectorAll(".card:not(.dragging)")];
+  let closest = { offset: -Infinity, element: null };
+  for (const child of others) {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) closest = { offset, element: child };
+  }
+  return closest.element;
+}
 
 function wireDragAndDrop() {
   document.querySelectorAll(".cards").forEach((zone) => {
     zone.addEventListener("dragover", (e) => {
       e.preventDefault();
       zone.classList.add("drag-over");
+      const dragging = document.querySelector(".card.dragging");
+      if (!dragging) return;
+      zone.querySelector(".empty-hint")?.remove();
+      // Move the card in the DOM as it is dragged, so the user sees the
+      // exact spot it will land in — within this column or another one.
+      const after = getDragAfterElement(zone, e.clientY);
+      if (after) zone.insertBefore(dragging, after);
+      else zone.appendChild(dragging);
     });
     zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
     zone.addEventListener("drop", async (e) => {
       e.preventDefault();
       zone.classList.remove("drag-over");
       const id = window.__draggingId;
-      const newStatus = zone.dataset.status;
       if (!id) return;
-      await api("PUT", `/api/cards/${id}`, { date: currentDate, status: newStatus });
+      window.__dropped = true;
+      const dragging = zone.querySelector(".card.dragging");
+      // Where the card sits in this column now is its new position.
+      const position = dragging ? [...zone.querySelectorAll(".card")].indexOf(dragging) : 0;
+      await api("PUT", `/api/cards/${id}`, {
+        date: currentDate,
+        status: zone.dataset.status,
+        position,
+      });
       await loadBoard();
     });
   });
