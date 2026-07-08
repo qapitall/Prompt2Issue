@@ -5,6 +5,18 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-07-08
+
+### Added
+- One-click complete: every card now has a ✓ button that marks it as Done
+  without dragging. Thanks [@Piyush180](https://github.com/Piyush180) for the
+  project's first external contribution!
+- A P2I icon, used as the favicon and in the README.
+
+### Changed
+- Pressing Enter in the plan box generates cards right away; use Shift+Enter
+  for a newline.
+
 ## [1.2.0] - 2026-07-04
 
 ### Added
@@ -33,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   editing, and AI card generation from plain-language plans via the Claude
   Code CLI.
 
+[1.3.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/qapitall/Prompt2Issue/releases/tag/v1.0.0
