@@ -244,23 +244,6 @@ button.ghost {
   color: var(--accent);
 }
 
-.quick-add {
-  width: 100%;
-  padding: 8px 10px;
-  margin-bottom: 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font: inherit;
-  font-size: 14px;
-  background: var(--surface);
-  color: var(--text);
-}
-
-.quick-add:focus {
-  border-color: var(--accent);
-  outline: none;
-}
-
 .cards {
   display: flex;
   flex-direction: column;

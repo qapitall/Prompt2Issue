@@ -433,14 +433,12 @@ function init() {
 
   $("#generate-btn").addEventListener("click", generate);
 
-  // Quick add: type a title in the To Do column and press Enter — no modal.
-  $("#quick-add").addEventListener("keydown", async (e) => {
-    if (e.key !== "Enter") return;
-    const title = e.target.value.trim();
-    if (!title) return;
-    e.target.value = "";
-    await api("POST", "/api/cards", { date: currentDate, title, status: "todo" });
-    await loadBoard();
+  // Enter generates cards right away; Shift+Enter inserts a newline.
+  $("#plan-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (!$("#generate-btn").disabled) generate();
+    }
   });
 
   document.querySelectorAll(".add-card-btn").forEach((btn) => {
