@@ -69,6 +69,8 @@ function renderBoard(cards) {
       container.appendChild(hint);
     }
     for (const card of inColumn) container.appendChild(renderCard(card));
+    const count = document.querySelector(`.column-count[data-status="${status}"]`);
+    if (count) count.textContent = inColumn.length;
   }
 }
 

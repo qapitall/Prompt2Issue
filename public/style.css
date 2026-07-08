@@ -231,6 +231,19 @@ button.ghost {
   color: var(--muted);
 }
 
+.column-count {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .add-card-btn {
   background: transparent;
   border: none;

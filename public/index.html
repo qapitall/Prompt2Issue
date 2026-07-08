@@ -60,7 +60,7 @@
     <main class="board" id="board">
       <section class="column" data-status="todo">
         <header class="column-header">
-          <h2>To Do</h2>
+          <h2>To Do <span class="column-count" data-status="todo">0</span></h2>
           <button class="add-card-btn" data-status="todo" title="Add card">+</button>
         </header>
         <div class="cards" data-status="todo"></div>
@@ -68,14 +68,14 @@
 
       <section class="column" data-status="doing">
         <header class="column-header">
-          <h2>In Progress</h2>
+          <h2>In Progress <span class="column-count" data-status="doing">0</span></h2>
         </header>
         <div class="cards" data-status="doing"></div>
       </section>
 
       <section class="column" data-status="done">
         <header class="column-header">
-          <h2>Done</h2>
+          <h2>Done <span class="column-count" data-status="done">0</span></h2>
         </header>
         <div class="cards" data-status="done"></div>
       </section>
