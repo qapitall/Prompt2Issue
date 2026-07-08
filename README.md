@@ -1,4 +1,4 @@
-# Prompt2Issue
+# <img src="public/favicon.svg" width="28" alt="" align="top" /> Prompt2Issue
 
 A simple, local kanban board for managing your daily tasks — with an AI helper
 that turns a plain-language plan into ready-to-use cards.
