@@ -129,36 +129,21 @@ function renderCard(card) {
   editBtn.title = "Edit";
   editBtn.addEventListener("click", () => openCardEditor(card));
   const delBtn = document.createElement("button");
-
-  const doneBtn = document.createElement("button");
-doneBtn.textContent = "✓";
-doneBtn.title = "Mark as Done";
-
-if (card.status === "done") {
-  doneBtn.style.display = "none";
-}
-
-doneBtn.addEventListener("click", async () => {
-  try {
-    await api("PUT", `/api/cards/${card.id}`, {
-      date: currentDate,
-      title: card.title,
-      description: card.description || "",
-      category: card.category || "",
-      priority: card.priority,
-      status: "done",
-    });
-
-    await loadBoard();
-  } catch (err) {
-    console.error("Failed to mark card as done:", err);
-  }
-});
-
   delBtn.textContent = "🗑️";
   delBtn.title = "Delete";
   delBtn.addEventListener("click", () => removeCard(card.id));
-  actions.append(editBtn, doneBtn, delBtn);
+  actions.append(editBtn);
+  if (card.status !== "done") {
+    const doneBtn = document.createElement("button");
+    doneBtn.textContent = "✓";
+    doneBtn.title = "Mark as Done";
+    doneBtn.addEventListener("click", async () => {
+      await api("PUT", `/api/cards/${card.id}`, { date: currentDate, status: "done" });
+      await loadBoard();
+    });
+    actions.append(doneBtn);
+  }
+  actions.append(delBtn);
   footer.appendChild(actions);
 
   el.appendChild(footer);
