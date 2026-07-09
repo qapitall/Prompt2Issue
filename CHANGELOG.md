@@ -5,6 +5,20 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-07-09
+
+### Added
+- Pick a category for AI-generated cards: type it next to the Generate button
+  (with suggestions from the board) and every generated card lands in it;
+  leave it empty and the AI picks per card, as before.
+- Column headers show how many cards are in each column.
+
+### Changed
+- Categories are case-insensitive: "Oyun" and "oyun" are the same category.
+  New cards reuse the existing casing, and the filter matches regardless of
+  case (Turkish dotted/dotless i handled correctly).
+- Clicking anywhere on a card opens the editor (buttons keep their own actions).
+
 ## [1.3.0] - 2026-07-08
 
 ### Added
@@ -45,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   editing, and AI card generation from plain-language plans via the Claude
   Code CLI.
 
+[1.4.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.0.0...v1.1.0
