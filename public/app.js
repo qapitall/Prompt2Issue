@@ -150,6 +150,12 @@ function renderCard(card) {
 
   el.appendChild(footer);
 
+  // Clicking anywhere on the card opens the editor; action buttons keep their own behavior.
+  el.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    openCardEditor(card);
+  });
+
   el.addEventListener("dragstart", () => {
     el.classList.add("dragging");
     window.__draggingId = card.id;
