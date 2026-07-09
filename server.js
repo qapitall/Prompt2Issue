@@ -104,12 +104,15 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { dates: listDates() });
   }
 
-  // POST /api/generate { text } -> suggested cards (not saved)
+  // POST /api/generate { text, category? } -> suggested cards (not saved)
+  // When a category is given, every generated card gets it; otherwise the AI
+  // picks a category per card.
   if (method === "POST" && pathname === "/api/generate") {
     const body = await readBody(req);
     const text = String(body.text || "").trim();
     if (!text) return sendJson(res, 400, { error: "Please provide some plan text." });
-    const cards = await generateCards(text);
+    const category = String(body.category || "").trim().slice(0, 40);
+    const cards = await generateCards(text, category);
     return sendJson(res, 200, { cards });
   }
 

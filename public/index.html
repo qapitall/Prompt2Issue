@@ -43,6 +43,14 @@
           <input type="checkbox" id="preview-toggle" checked />
           Preview before adding
         </label>
+        <input
+          type="text"
+          id="ai-category"
+          list="category-options"
+          placeholder="Category (empty = AI decides)"
+          title="All generated cards go into this category; leave empty to let AI choose"
+        />
+        <datalist id="category-options"></datalist>
         <button id="generate-btn" class="primary">Generate cards</button>
       </div>
       <p id="ai-status" class="status" hidden></p>
@@ -100,7 +108,7 @@
         <h2 id="card-modal-title">New card</h2>
         <label>Title<input type="text" id="card-title" /></label>
         <label>Description<textarea id="card-description" rows="3"></textarea></label>
-        <label>Category<input type="text" id="card-category" placeholder="e.g. work, bug, personal" /></label>
+        <label>Category<input type="text" id="card-category" list="category-options" placeholder="e.g. work, bug, personal" /></label>
         <label>
           Priority
           <select id="card-priority">

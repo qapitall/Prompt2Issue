@@ -15,6 +15,10 @@ let categoryFilter = "";
 
 const $ = (sel) => document.querySelector(sel);
 
+// Case-insensitive category key: "Oyun" and "oyun" are the same category.
+// Turkish locale so dotted/dotless i lowercase correctly.
+const catKey = (s) => (s || "").toLocaleLowerCase("tr");
+
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
@@ -41,17 +45,30 @@ async function loadBoard() {
 }
 
 // Rebuild the filter dropdown from the categories present on this board.
+// Categories are deduped case-insensitively, keeping the first-seen casing.
 function updateCategoryFilter() {
-  const categories = [...new Set(boardCards.map((c) => c.category).filter(Boolean))].sort();
-  if (!categories.includes(categoryFilter)) categoryFilter = "";
+  const byKey = new Map();
+  for (const c of boardCards) {
+    if (c.category && !byKey.has(catKey(c.category))) byKey.set(catKey(c.category), c.category);
+  }
+  const categories = [...byKey.values()].sort((a, b) => a.localeCompare(b, "tr"));
+  if (categoryFilter && !byKey.has(catKey(categoryFilter))) categoryFilter = "";
   const select = $("#category-filter");
   select.innerHTML = '<option value="">All</option>';
   for (const cat of categories) {
     const opt = document.createElement("option");
     opt.value = cat;
     opt.textContent = cat;
-    if (cat === categoryFilter) opt.selected = true;
+    if (catKey(cat) === catKey(categoryFilter)) opt.selected = true;
     select.appendChild(opt);
+  }
+  // Offer the same categories as suggestions wherever a category can be typed.
+  const datalist = $("#category-options");
+  datalist.innerHTML = "";
+  for (const cat of categories) {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    datalist.appendChild(opt);
   }
 }
 
@@ -60,7 +77,7 @@ function renderBoard(cards) {
     const container = document.querySelector(`.cards[data-status="${status}"]`);
     container.innerHTML = "";
     const inColumn = cards.filter(
-      (c) => c.status === status && (!categoryFilter || c.category === categoryFilter)
+      (c) => c.status === status && (!categoryFilter || catKey(c.category) === catKey(categoryFilter))
     );
     if (inColumn.length === 0) {
       const hint = document.createElement("div");
@@ -284,11 +301,13 @@ function setStatus(message, kind) {
 async function generate() {
   const text = $("#plan-input").value.trim();
   if (!text) return;
+  // Optional: force every generated card into this category (AI decides if empty).
+  const category = $("#ai-category").value.trim();
   const btn = $("#generate-btn");
   btn.disabled = true;
   setStatus("AI is generating cards… (a few seconds)", "loading");
   try {
-    const { cards } = await api("POST", "/api/generate", { text });
+    const { cards } = await api("POST", "/api/generate", { text, category });
     if (!cards.length) {
       setStatus("AI couldn't generate any cards. Try describing your plan more clearly.", "error");
       return;

@@ -130,6 +130,18 @@ body {
   margin-top: 10px;
 }
 
+#ai-category {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  width: 220px;
+  max-width: 100%;
+}
+
 .preview-toggle {
   font-size: 14px;
   color: var(--muted);
