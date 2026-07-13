@@ -10,6 +10,7 @@ let currentDate = todayStr();
 // Last loaded cards and the active category filter ("" = show all).
 let boardCards = [];
 let categoryFilter = "";
+let textFilter = "";
 
 // --- Small DOM / API helpers -------------------------------------------------
 
@@ -77,7 +78,12 @@ function renderBoard(cards) {
     const container = document.querySelector(`.cards[data-status="${status}"]`);
     container.innerHTML = "";
     const inColumn = cards.filter(
-      (c) => c.status === status && (!categoryFilter || catKey(c.category) === catKey(categoryFilter))
+      (c) =>
+        c.status === status &&
+        (!categoryFilter || catKey(c.category) === catKey(categoryFilter)) &&
+        (!textFilter ||
+          c.title.toLocaleLowerCase("tr").includes(textFilter.toLocaleLowerCase("tr")) ||
+          (c.description && c.description.toLocaleLowerCase("tr").includes(textFilter.toLocaleLowerCase("tr"))))
     );
     if (inColumn.length === 0) {
       const hint = document.createElement("div");
@@ -455,6 +461,11 @@ function init() {
 
   $("#category-filter").addEventListener("change", (e) => {
     categoryFilter = e.target.value;
+    renderBoard(boardCards);
+  });
+
+  $("#search-input").addEventListener("input", (e) => {
+    textFilter = e.target.value;
     renderBoard(boardCards);
   });
 
