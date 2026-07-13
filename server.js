@@ -7,7 +7,7 @@ import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { generateCards } from "./lib/claude.js";
+import { breakdownCard, generateCards } from "./lib/claude.js";
 import {
   addCard,
   addCards,
@@ -113,6 +113,18 @@ async function handleApi(req, res, url) {
     if (!text) return sendJson(res, 400, { error: "Please provide some plan text." });
     const category = String(body.category || "").trim().slice(0, 40);
     const cards = await generateCards(text, category);
+    return sendJson(res, 200, { cards });
+  }
+
+  // POST /api/breakdown { title, description?, category? } -> subtask suggestions (not saved)
+  // The category is passed through so subtasks inherit the parent card's group.
+  if (method === "POST" && pathname === "/api/breakdown") {
+    const body = await readBody(req);
+    const title = String(body.title || "").trim();
+    if (!title) return sendJson(res, 400, { error: "Please provide the card to break down." });
+    const description = String(body.description || "").trim();
+    const category = String(body.category || "").trim().slice(0, 40);
+    const cards = await breakdownCard(title, description, category);
     return sendJson(res, 200, { cards });
   }
 

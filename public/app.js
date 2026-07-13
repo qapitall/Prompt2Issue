@@ -159,6 +159,10 @@ function renderCard(card) {
   delBtn.addEventListener("click", () => removeCard(card.id));
   actions.append(editBtn);
   if (card.status !== "done") {
+    const splitBtn = document.createElement("button");
+    splitBtn.textContent = "🧩";
+    splitBtn.title = "Break down into subtasks";
+    splitBtn.addEventListener("click", () => breakDownCard(card, splitBtn));
     const doneBtn = document.createElement("button");
     doneBtn.textContent = "✓";
     doneBtn.title = "Mark as Done";
@@ -166,7 +170,7 @@ function renderCard(card) {
       await api("PUT", `/api/cards/${card.id}`, { date: currentDate, status: "done" });
       await loadBoard();
     });
-    actions.append(doneBtn);
+    actions.append(splitBtn, doneBtn);
   }
   actions.append(delBtn);
   footer.appendChild(actions);
@@ -319,7 +323,7 @@ async function generate() {
       return;
     }
     if ($("#preview-toggle").checked) {
-      openPreview(cards);
+      openPreview(cards, { clearPlan: true });
       setStatus("", "");
     } else {
       await api("POST", "/api/cards/bulk", { date: currentDate, cards });
@@ -334,12 +338,38 @@ async function generate() {
   }
 }
 
+// Ask AI to split one card into concrete subtasks; the suggestions go through
+// the same preview modal as plan generation. The original card is kept as is.
+async function breakDownCard(card, btn) {
+  btn.disabled = true;
+  setStatus("AI is breaking the card into steps… (a few seconds)", "loading");
+  try {
+    const { cards } = await api("POST", "/api/breakdown", {
+      title: card.title,
+      description: card.description,
+      category: card.category,
+    });
+    if (!cards.length) {
+      setStatus("AI couldn't break this card down. Try adding more detail to it first.", "error");
+      return;
+    }
+    openPreview(cards);
+    setStatus("", "");
+  } catch (err) {
+    setStatus(err.message, "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // --- Preview modal for AI suggestions ---------------------------------------
 
-function openPreview(cards) {
+// clearPlan: wipe the plan textarea after confirming (used by the generate flow).
+function openPreview(cards, { clearPlan = false } = {}) {
   const list = $("#preview-list");
   list.innerHTML = "";
   cards.forEach((card) => list.appendChild(renderPreviewItem(card)));
+  $("#preview-modal").dataset.clearPlan = clearPlan ? "1" : "";
   $("#preview-modal").hidden = false;
 }
 
@@ -400,10 +430,11 @@ function collectPreviewCards() {
 
 async function confirmPreview() {
   const cards = collectPreviewCards();
-  $("#preview-modal").hidden = true;
+  const modal = $("#preview-modal");
+  modal.hidden = true;
   if (!cards.length) return;
   await api("POST", "/api/cards/bulk", { date: currentDate, cards });
-  $("#plan-input").value = "";
+  if (modal.dataset.clearPlan) $("#plan-input").value = "";
   setStatus(`${cards.length} card(s) added.`, "");
   await loadBoard();
 }
