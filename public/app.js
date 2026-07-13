@@ -1,5 +1,5 @@
 // Frontend logic for Prompt2Issue. Vanilla JS, no build step.
-// UI strings are Turkish (user preference); code and comments are English.
+// UI strings, code and comments are English.
 
 const STATUS_LABELS = { todo: "To Do", doing: "In Progress", done: "Done" };
 const PRIORITY_LABELS = { high: "High", medium: "Medium", low: "Low" };
@@ -408,7 +408,7 @@ function renderPreviewItem(card) {
 
   const removeBtn = document.createElement("button");
   removeBtn.className = "preview-remove";
-  removeBtn.textContent = "Kaldır";
+  removeBtn.textContent = "Remove";
   removeBtn.addEventListener("click", () => item.remove());
 
   footer.append(categoryInput, prioritySelect, removeBtn);
