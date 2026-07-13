@@ -66,11 +66,19 @@ there is no authentication — start it with `HOST=0.0.0.0 node server.js`.
 
 - **Add a card by hand:** click the `+` in the **To Do** column.
 - **Generate cards with AI:** type your plan in the top box and click
-  **Generate cards**.
+  **Generate cards**, or just press Enter (Shift+Enter for a newline).
   - With **Preview before adding** checked — the default — you get a preview
     where you can edit, remove, then confirm the suggested cards.
   - Uncheck it to add the generated cards straight to the board.
-- **Move cards:** drag them between the **To Do / In Progress / Done** columns.
+  - Type a category next to the button to put every generated card in it;
+    leave it empty and the AI picks one per card.
+- **Break a card into steps:** the 🧩 button on a card asks the AI to split it
+  into 2-4 smaller subtasks, shown in the same preview before they are added.
+- **Complete with one click:** the ✓ button marks a card as Done.
+- **Move cards:** drag them between the **To Do / In Progress / Done** columns,
+  or reorder them within a column — the order is saved.
+- **Find cards:** filter the board by category, or type in the search box to
+  match card titles and descriptions as you type.
 - **Carry-over:** when you open a new day, unfinished cards from your most
   recent day move forward automatically. A **↻ Nd** badge shows how many days a
   card has been on the board. Finished cards stay in the day you completed them.
