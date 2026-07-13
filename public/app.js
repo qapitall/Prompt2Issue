@@ -82,8 +82,8 @@ function renderBoard(cards) {
         c.status === status &&
         (!categoryFilter || catKey(c.category) === catKey(categoryFilter)) &&
         (!textFilter ||
-          c.title.toLocaleLowerCase("tr").includes(textFilter.toLocaleLowerCase("tr")) ||
-          (c.description && c.description.toLocaleLowerCase("tr").includes(textFilter.toLocaleLowerCase("tr"))))
+          catKey(c.title).includes(catKey(textFilter)) ||
+          catKey(c.description).includes(catKey(textFilter)))
     );
     if (inColumn.length === 0) {
       const hint = document.createElement("div");
@@ -465,7 +465,7 @@ function init() {
   });
 
   $("#search-input").addEventListener("input", (e) => {
-    textFilter = e.target.value;
+    textFilter = e.target.value.trim();
     renderBoard(boardCards);
   });
 
