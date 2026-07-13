@@ -212,6 +212,27 @@ button.ghost {
   font: inherit;
 }
 
+.filter-bar input {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font: inherit;
+  width: 180px;
+  transition: border-color 0.15s ease;
+}
+
+.filter-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.filter-separator {
+  color: var(--border);
+  margin: 0 4px;
+}
+
 /* Board */
 .board {
   display: grid;
