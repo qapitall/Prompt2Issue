@@ -5,6 +5,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-07-13
+
+### Added
+- Break a card into steps: a new 🧩 button asks the AI to split one card into
+  2-4 smaller subtasks, which go through the usual preview before being added.
+  Subtasks inherit the parent card's category.
+- Search the board: a search box next to the category filter narrows all three
+  columns as you type, matching card titles and descriptions (case-insensitive,
+  Turkish dotted/dotless i handled). Works together with the category filter.
+  Thanks [@a7hu-15](https://github.com/a7hu-15) for the contribution!
+
+### Fixed
+- A leftover Turkish "Kaldır" label on the preview modal's remove button is
+  now "Remove", matching the English UI.
+
 ## [1.4.0] - 2026-07-09
 
 ### Added
@@ -59,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   editing, and AI card generation from plain-language plans via the Claude
   Code CLI.
 
+[1.5.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/qapitall/Prompt2Issue/compare/v1.1.0...v1.2.0
